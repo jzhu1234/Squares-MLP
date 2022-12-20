@@ -1,0 +1,17 @@
+{
+  "model": {
+    "input_size": 5,
+    "hidden_sizes":  [10, 15, 10],
+    "num_classes": 3,
+    "batchnorm": true,
+    "dropout": true,
+    "activation": "softmax"
+  },
+  "loader": {
+    "batch_size": 32,
+    "shuffle": true
+  },
+  "num_epochs": 100,
+  "lr": 0.001,
+  "save_dir": "model1"
+}
