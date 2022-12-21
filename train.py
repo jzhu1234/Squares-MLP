@@ -1,5 +1,5 @@
 import torch
-from perceptron import MultiLayerPerceptron
+from mlp_model import MultiLayerPerceptron
 from mlp_dataloader import SquareDataset, DataLoader
 import json, os
 from tqdm import tqdm
@@ -43,13 +43,15 @@ if __name__ == '__main__':
 
             outputs = model(data)
 
-            loss = loss_fcn(outputs, labels)
+            loss = loss_fcn(outputs, torch.argmax(labels, dim=1))
             loss.backward()
             avg_tloss += loss.item()
             optimizer.step()
         avg_tloss /= len(train_loader)
         # Validation
-        model.train(False)
+        # model.train(False)
+        model.eval()
+
         all_pred_lbls = []
         all_true_lbls = []
         for vdata, vlabels in tqdm(val_loader, "Validating"):
@@ -62,6 +64,7 @@ if __name__ == '__main__':
         true_lbls = torch.cat(all_true_lbls)
         f1score = metrics(pred_lbls, true_lbls)
 
+        print()
         print('LOSS train {}'.format(avg_tloss))
         print('Val F1 score {}'.format(f1score))
 
